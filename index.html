@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Психология и педагогика — конспект к зачёту</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0F1115;
+  --paper:#F7F5F0;
+  --paper-dim:#EDE9DF;
+  --blue:#2B4C7E;
+  --blue-light:#5677A8;
+  --brass:#C9A227;
+  --brass-soft:#E0C572;
+  --slate:#6B7280;
+  --line:#E2DDD0;
+  --line-dark:#262A33;
+  --card:#FFFFFF;
+  --radius:14px;
+  --max-w:1240px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--paper);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--brass-soft);color:var(--ink);}
+
+a{color:inherit;}
+button{font-family:inherit;}
+
+/* ===== Texture ===== */
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ===== Top bar ===== */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;gap:14px;
+  padding:14px 20px;
+  background:rgba(15,17,21,.86);
+  backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--line-dark);
+}
+.topbar .mark{
+  width:34px;height:34px;border-radius:9px;flex:none;
+  background:linear-gradient(155deg,var(--blue) 0%,var(--blue-light) 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--paper);
+}
+.topbar .title{
+  display:flex;flex-direction:column;line-height:1.15;min-width:0;
+}
+.topbar .title b{font-family:'Fraunces',serif;font-weight:600;font-size:15px;letter-spacing:.2px;}
+.topbar .title span{font-size:11px;color:var(--slate);font-family:'JetBrains Mono',monospace;}
+.topbar .spacer{flex:1;}
+
+.menu-btn{
+  display:none;
+  width:38px;height:38px;border-radius:10px;border:1px solid var(--line-dark);
+  background:transparent;color:var(--paper);align-items:center;justify-content:center;
+  flex:none;cursor:pointer;
+}
+.menu-btn svg{width:18px;height:18px;}
+
+.search-wrap{
+  position:relative;flex:none;width:240px;
+}
+.search-wrap input{
+  width:100%;
+  background:#171A20;border:1px solid var(--line-dark);
+  color:var(--paper);font-size:13px;
+  padding:9px 12px 9px 32px;border-radius:10px;
+  font-family:'Inter',sans-serif;
+  transition:border-color .2s var(--ease),background .2s var(--ease);
+}
+.search-wrap input::placeholder{color:var(--slate);}
+.search-wrap input:focus{outline:none;border-color:var(--blue-light);background:#1B1F27;}
+.search-wrap svg{
+  position:absolute;left:11px;top:50%;transform:translateY(-50%);
+  width:14px;height:14px;color:var(--slate);pointer-events:none;
+}
+
+/* ===== Progress dial (signature element) ===== */
+.dial{
+  position:relative;width:38px;height:38px;flex:none;cursor:default;
+}
+.dial svg{transform:rotate(-90deg);width:38px;height:38px;}
+.dial circle{fill:none;stroke-width:3;}
+.dial .track{stroke:var(--line-dark);}
+.dial .fill{stroke:var(--brass);stroke-linecap:round;transition:stroke-dashoffset .6s var(--ease);}
+.dial .pct{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--brass-soft);
+}
+
+/* ===== Layout ===== */
+.layout{
+  display:grid;
+  grid-template-columns:280px minmax(0,1fr);
+  max-width:var(--max-w);
+  margin:0 auto;
+  position:relative;z-index:2;
+}
+
+/* ===== Sidebar ===== */
+.sidebar{
+  position:sticky;top:69px;
+  align-self:start;
+  height:calc(100vh - 69px);
+  overflow-y:auto;
+  padding:28px 16px 40px 20px;
+  border-right:1px solid var(--line-dark);
+  scrollbar-width:thin;
+  scrollbar-color:var(--line-dark) transparent;
+}
+.sidebar::-webkit-scrollbar{width:6px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--line-dark);border-radius:3px;}
+
+.overall{
+  margin-bottom:22px;padding:16px;border-radius:var(--radius);
+  background:linear-gradient(155deg,#171B22,#13161B);
+  border:1px solid var(--line-dark);
+}
+.overall .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--slate);text-transform:uppercase;}
+.overall .num{font-family:'Fraunces',serif;font-size:32px;font-weight:600;color:var(--paper);margin:4px 0 8px;}
+.overall .num span{font-size:16px;color:var(--slate);font-weight:400;}
+.overall .bar{height:5px;border-radius:3px;background:var(--line-dark);overflow:hidden;}
+.overall .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue-light),var(--brass));border-radius:3px;transition:width .5s var(--ease);width:0%;}
+
+.chapters{display:flex;flex-direction:column;gap:3px;}
+.chapter-link{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 10px;border-radius:10px;
+  text-decoration:none;cursor:pointer;
+  border:1px solid transparent;
+  transition:background .15s var(--ease);
+}
+.chapter-link:hover{background:#171A20;}
+.chapter-link.active{background:#181C24;border-color:var(--line-dark);}
+.chapter-link .ico{
+  flex:none;width:26px;height:26px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+  background:var(--line-dark);color:var(--slate);
+}
+.chapter-link.active .ico{background:var(--blue);color:var(--paper);}
+.chapter-link .txt{flex:1;min-width:0;}
+.chapter-link .txt b{display:block;font-size:13px;font-weight:500;color:var(--paper);line-height:1.25;}
+.chapter-link .txt small{display:block;font-size:11px;color:var(--slate);font-family:'JetBrains Mono',monospace;margin-top:2px;}
+.chapter-link .ring{
+  flex:none;width:20px;height:20px;position:relative;
+}
+.chapter-link .ring svg{width:20px;height:20px;transform:rotate(-90deg);}
+.chapter-link .ring circle{fill:none;stroke-width:2.5;}
+.chapter-link .ring .t{stroke:var(--line-dark);}
+.chapter-link .ring .f{stroke:var(--brass);stroke-linecap:round;transition:stroke-dashoffset .4s var(--ease);}
+
+/* ===== Mobile drawer backdrop ===== */
+.backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:39;opacity:0;pointer-events:none;
+  transition:opacity .25s var(--ease);
+}
+.backdrop.show{opacity:1;pointer-events:auto;}
+
+/* ===== Main ===== */
+main{
+  padding:36px 36px 120px;
+  min-width:0;
+}
+.hero{
+  margin-bottom:44px;
+}
+.hero .eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--brass-soft);margin-bottom:14px;display:flex;align-items:center;gap:10px;
+}
+.hero .eyebrow::before{content:'';width:18px;height:1px;background:var(--brass-soft);}
+.hero h1{
+  font-family:'Fraunces',serif;font-weight:600;font-size:42px;line-height:1.08;letter-spacing:-.5px;
+  margin:0 0 14px;max-width:680px;color:var(--paper);
+}
+.hero h1 em{font-style:italic;color:var(--brass-soft);font-weight:500;}
+.hero p{
+  font-size:15px;color:var(--slate);max-width:520px;line-height:1.6;margin:0;
+}
+.hero .meta{
+  display:flex;gap:22px;margin-top:24px;flex-wrap:wrap;
+}
+.hero .meta div{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--slate);}
+.hero .meta div b{color:var(--paper);font-size:15px;display:block;font-family:'Fraunces',serif;font-weight:600;margin-bottom:2px;}
+
+/* ===== Chapter section ===== */
+.chapter{
+  margin-bottom:64px;scroll-margin-top:90px;
+}
+.chapter-head{
+  display:flex;align-items:baseline;gap:16px;margin-bottom:22px;
+  padding-bottom:14px;border-bottom:1px solid var(--line-dark);
+}
+.chapter-head .n{
+  font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--brass-soft);font-weight:600;
+}
+.chapter-head h2{
+  font-family:'Fraunces',serif;font-weight:600;font-size:25px;margin:0;color:var(--paper);flex:1;
+  letter-spacing:-.2px;
+}
+.chapter-head .count{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--slate);
+  background:#171A20;border:1px solid var(--line-dark);border-radius:20px;padding:4px 10px;flex:none;
+}
+
+/* ===== Question cards ===== */
+.qcard{
+  background:var(--card);
+  border-radius:var(--radius);
+  margin-bottom:14px;
+  overflow:hidden;
+  border:1px solid transparent;
+  transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.qcard.studied{border-color:var(--brass-soft);}
+.qcard.hidden-by-search{display:none;}
+
+.qhead{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 18px;cursor:pointer;
+  user-select:none;
+}
+.qhead .stamp{
+  flex:none;width:32px;height:32px;border-radius:50%;
+  border:1.5px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--ink);
+  transition:all .25s var(--ease);
+  position:relative;
+}
+.qcard.studied .stamp{
+  background:var(--blue);border-color:var(--blue);color:#fff;
+  transform:scale(1.05);
+}
+.qcard.studied .stamp::after{
+  content:'';position:absolute;inset:-4px;border-radius:50%;
+  border:1.5px solid var(--brass-soft);opacity:0;
+  animation:stampPulse .5s var(--ease);
+}
+@keyframes stampPulse{
+  0%{opacity:.9;transform:scale(.7);}
+  100%{opacity:0;transform:scale(1.35);}
+}
+.qhead .qtext{
+  flex:1;font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.4;min-width:0;
+}
+.qhead .chev{
+  flex:none;width:18px;height:18px;color:#9C9587;
+  transition:transform .3s var(--ease);
+}
+.qcard.open .chev{transform:rotate(180deg);}
+
+.qbody{
+  max-height:0;overflow:hidden;
+  transition:max-height .35s var(--ease);
+}
+.qbody-inner{
+  padding:0 18px 22px 64px;
+  color:#3A372F;
+  font-size:14px;line-height:1.7;
+}
+.qbody-inner p{margin:0 0 12px;}
+.qbody-inner p:last-child{margin-bottom:0;}
+
+mark.hit{background:var(--brass-soft);color:var(--ink);border-radius:3px;padding:0 2px;}
+
+/* ===== Empty search state ===== */
+.empty-state{
+  display:none;
+  text-align:center;padding:80px 20px;color:var(--slate);
+}
+.empty-state.show{display:block;}
+.empty-state .ico{font-size:32px;margin-bottom:12px;}
+.empty-state h3{font-family:'Fraunces',serif;color:var(--paper);font-size:20px;margin:0 0 6px;}
+.empty-state p{font-size:13px;margin:0;}
+
+/* ===== Back to top ===== */
+.totop{
+  position:fixed;bottom:24px;right:24px;z-index:30;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--brass);border:none;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:all .3s var(--ease);
+}
+.totop.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+.totop svg{width:18px;height:18px;}
+
+/* ===== Reset progress ===== */
+.reset-btn{
+  margin-top:18px;width:100%;
+  background:transparent;border:1px solid var(--line-dark);color:var(--slate);
+  font-size:11.5px;font-family:'JetBrains Mono',monospace;
+  padding:9px;border-radius:9px;cursor:pointer;
+  transition:all .2s var(--ease);
+}
+.reset-btn:hover{border-color:var(--slate);color:var(--paper);}
+
+/* ============================================================
+   RESPONSIVE — TABLET / SMALL DESKTOP
+   ============================================================ */
+@media (max-width:1080px){
+  .layout{grid-template-columns:1fr;}
+  .sidebar{
+    position:fixed;left:0;top:0;bottom:0;width:300px;
+    z-index:50;background:var(--ink);
+    transform:translateX(-100%);
+    transition:transform .3s var(--ease);
+    height:100vh;padding-top:84px;
+    box-shadow:20px 0 60px rgba(0,0,0,.4);
+  }
+  .sidebar.open{transform:translateX(0);}
+  .menu-btn{display:flex;}
+  .search-wrap{width:auto;flex:1;max-width:280px;}
+  main{padding:28px 24px 100px;}
+}
+
+/* ============================================================
+   MOBILE — iPhone (390–430px design target)
+   ============================================================ */
+@media (max-width:680px){
+  .topbar{padding:12px 14px;gap:10px;}
+  .topbar .title span{display:none;}
+  .dial{display:none;}
+  .search-wrap{max-width:none;}
+  .search-wrap input{padding:10px 12px 10px 30px;font-size:13px;}
+
+  main{padding:22px 16px 110px;}
+  .hero{margin-bottom:32px;}
+  .hero h1{font-size:30px;}
+  .hero p{font-size:14px;}
+  .hero .meta{gap:16px;}
+  .hero .meta div b{font-size:13px;}
+
+  .chapter-head{gap:10px;margin-bottom:16px;}
+  .chapter-head h2{font-size:19px;}
+  .chapter-head .count{font-size:10px;padding:3px 8px;}
+
+  .qhead{padding:14px 14px;gap:10px;}
+  .qhead .qtext{font-size:13.5px;}
+  .qhead .stamp{width:28px;height:28px;font-size:10px;}
+  .qbody-inner{padding:0 14px 18px 52px;font-size:13.5px;}
+
+  .totop{width:40px;height:40px;bottom:16px;right:16px;}
+  .sidebar{width:86vw;max-width:340px;}
+}
+
+@media (max-width:380px){
+  .hero h1{font-size:26px;}
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.001ms !important;animation-duration:.001ms !important;scroll-behavior:auto !important;}
+}
+
+/* Focus visibility */
+a:focus-visible,button:focus-visible,input:focus-visible,.qhead:focus-visible{
+  outline:2px solid var(--brass);outline-offset:2px;
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Открыть меню разделов">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div class="mark">М</div>
+  <div class="title">
+    <b>Психология и педагогика</b>
+    <span>Конспект к зачёту · по Маклакову</span>
+  </div>
+  <div class="spacer"></div>
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" id="searchInput" placeholder="Найти по вопросам..." autocomplete="off">
+  </div>
+  <div class="dial" id="topDial" title="Прогресс изучения">
+    <svg viewBox="0 0 38 38">
+      <circle class="track" cx="19" cy="19" r="16"></circle>
+      <circle class="fill" cx="19" cy="19" r="16" id="topDialFill"></circle>
+    </svg>
+    <div class="pct" id="topDialPct">0%</div>
+  </div>
+</header>
+
+<div class="backdrop" id="backdrop"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="overall">
+      <div class="label">Пройдено материала</div>
+      <div class="num" id="overallNum">0<span>&nbsp;/&nbsp;53</span></div>
+      <div class="bar"><i id="overallBar"></i></div>
+      <button class="reset-btn" id="resetBtn">Сбросить прогресс</button>
+    </div>
+    <nav class="chapters" id="chapterNav"></nav>
+  </aside>
+
+  <main id="mainContent">
+    <section class="hero">
+      <div class="eyebrow">53 вопроса · 8 разделов</div>
+      <h1>Свод ответов <em>по Маклакову</em><br>для зачёта</h1>
+      <p>Все темы курса собраны по смысловым блокам — от предмета психологии до медицинской психологии и педагогики. Нажимайте на вопрос, чтобы открыть ответ и отметить его изученным.</p>
+      <div class="meta">
+        <div><b>53</b>вопроса</div>
+        <div><b>8</b>разделов</div>
+        <div><b>А.Г. Маклаков</b>источник</div>
+      </div>
+    </section>
+
+    <div id="chaptersContainer"></div>
+
+    <div class="empty-state" id="emptyState">
+      <div class="ico">🔍</div>
+      <h3>Ничего не найдено</h3>
+      <p>Попробуйте другой запрос или очистите поиск.</p>
+    </div>
+  </main>
+</div>
+
+<button class="totop" id="totopBtn" aria-label="Наверх">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
+<script>
+/* ===================== DATA ===================== */
+const DATA = [
+  { id:'foundations', title:'Психология как наука', subtitle:'предмет, история, методология', questions:[1,2,3,4,5] },
+  { id:'methods', title:'Методы исследования', subtitle:'эксперимент, наблюдение, тесты', questions:[6,7,8,9,10,11,12] },
+  { id:'cognition-basic', title:'Психика и познание', subtitle:'сознание, ощущение, восприятие', questions:[13,14,15,16,17,18] },
+  { id:'memory-attention', title:'Память и внимание', subtitle:'процессы, виды, диагностика', questions:[19,20,21,22,23,24,25,26,27] },
+  { id:'thinking-speech', title:'Мышление, речь, интеллект', subtitle:'операции, формы, теории интеллекта', questions:[28,29,30,31,32,33,34,35,36,37] },
+  { id:'emotion', title:'Эмоциональная сфера', subtitle:'эмоции, чувства, эмоциональный интеллект', questions:[38,39,40,41] },
+  { id:'personality', title:'Личность', subtitle:'темперамент, характер, акцентуации', questions:[42,43,44,45,46,47] },
+  { id:'clinical-pedagogy', title:'Медицинская психология и педагогика', subtitle:'стресс, болезнь, врач и пациент', questions:[48,49,50,51,52,53] },
+];
+
+const QA = {
+1:["Общая характеристика психологии как науки. Основные этапы развития представлений о предмете психологии.","<b>Психология</b> — это наука, которая изучает психику, её развитие и то, как она управляет поведением человека.\n\n<b>4 этапа развития представлений:</b>\n1. <b>Как наука о душе</b> (древность): душой объясняли всё живое и непонятное.\n2. <b>Как наука о сознании</b> (с XVII века): изучали то, что человек сам в себе осознает (главный метод — интроспекция / самонаблюдение).\n3. <b>Как наука о поведении / Бихевиоризм</b> (XX век): изучали только внешние действия и реакции, которые можно увидеть и измерить.\n4. <b>Современный этап</b>: психология как наука о механизмах и закономерностях работы психики."],
+2:["Понятие предмета и объекта психологической науки. Современные представления о психологии.","<b>Объект психологии</b> — это носители психики (человек, группы людей, животные).\n\n<b>Предмет психологии</b> — это конкретные законы и механизмы работы психики.\n\n<b>Психические явления делятся на 3 группы:</b>\n1. <b>Психические процессы</b> (быстротечные): ощущение, восприятие, память, мышление, внимание.\n2. <b>Психические состояния</b> (временные): усталость, бодрость, стресс, хорошее или плохое настроение.\n3. <b>Психические свойства</b> (устойчивые, на всю жизнь): характер, темперамент, способности, направленность."],
+3:["Место психологии в системе наук. Характеристика основных отраслей и направлений психологии.","Психология находится на стыке <b>гуманитарных</b> (философия, социология), <b>естественных</b> (биология, анатомия) и <b>технических</b> наук.\n\n<b>Основные направления:</b>\n• <b>Психоанализ (З. Фрейд)</b> — поведением управляют скрытые бессознательные влечения.\n• <b>Бихевиоризм (Дж. Уотсон)</b> — изучает схему «Стимул — Реакция», внутренний мир человека не важен.\n• <b>Гуманистическое (А. Маслоу)</b> — главное — личностный рост человека и его самоактуализация.\n• <b>Деятельностный подход (Отечественная школа)</b> — психика формируется и проявляется в реальной деятельности.\n\n<b>Основные отрасли:</b> общая, социальная, возрастная, клиническая (медицинская), педагогическая."],
+4:["Принципы отечественной психологии, их научное обоснование и краткая характеристика.","Это базовые правила, по которым работает наша наука:\n\n1. <b>Принцип детерминизма:</b> у любого психического явления есть внешняя причина (среда, биология), ничто не возникает само по себе.\n2. <b>Принцип единства сознания и деятельности (С. Рубинштейн):</b> сознание формируется в процессе реальных дел и в этих же делах проявляется.\n3. <b>Принцип развития:</b> психику нельзя изучать как застывший факт, её нужно рассматривать только в постоянном изменении и динамике.\n4. <b>Принцип системности:</b> психика — это не набор отдельных функций, а единая, целостная взаимосвязанная система.\n5. <b>Принцип личностного подхода:</b> любые процессы и состояния изучаются с учётом индивидуальных особенностей конкретного человека."],
+5:["Определение «психологической помощи». Основные виды психологической помощи.","<b>Психологическая помощь</b> — это практическая поддержка и воздействие психолога, направленные на решение личных проблем человека и улучшение его жизни.\n\n<b>Основные виды:</b>\n1. <b>Просвещение</b> — лекции, книги и раздача знаний о психологии для людей.\n2. <b>Профилактика</b> — предупреждение возможных психологических срывов и проблем.\n3. <b>Диагностика</b> — проведение тестов и опросов для выявления особенностей личности.\n4. <b>Консультирование</b> — общение со здоровыми людьми, попавшими в сложную ситуацию.\n5. <b>Коррекция</b> — исправление конкретных недостатков в поведении или развитии.\n6. <b>Психотерапия</b> — глубокая лечебная работа при сильных травмах и расстройствах."],
+6:["«Психологическое исследование» — определение, цели и задачи. Основные требования к психологическим исследованиям.","<b>Психологическое исследование</b> — это научный процесс сбора фактов для изучения законов психики.\n\n<b>Главные требования к нему:</b>\n• <b>Валидность</b> — тест или эксперимент должен проверять именно то, для чего он создан (а не что-то другое).\n• <b>Надёжность</b> — при повторном тесте в похожих условиях результаты должны быть одинаковыми.\n• <b>Объективность</b> — личное мнение исследователя не должно влиять на результаты.\n• <b>Репрезентативность</b> — группа испытуемых должна отражать свойства всего общества.\n• <b>Этичность</b> — полная анонимность, добровольное участие и принцип «не навреди»."],
+7:["Определение понятия «методы психологии». Классификация методов по Б.Г. Ананьеву и С.Л. Рубинштейну.","<b>Метод</b> — это конкретный способ получить научные данные.\n\n<b>Классификация по Б.Г. Ананьеву:</b>\n1. <b>Организационные</b> (как строится исследование): сравнительный метод, лонгитюдный (долгий сбор данных годами), комплексный.\n2. <b>Эмпирические</b> (как собирают данные): наблюдение, эксперимент, беседы, тесты.\n3. <b>Методы обработки</b>: математическая статистика, качественный анализ.\n4. <b>Интерпретационные</b>: объяснение результатов через генетический или структурный подходы.\n\n<b>По С.Л. Рубинштейну</b> методы делятся проще: <b>основные</b> (наблюдение и эксперимент) и <b>вспомогательные</b> (беседа, тесты, анализ продуктов деятельности)."],
+8:["Эксперимент — как метод общей психологии. Виды экспериментов.","<b>Эксперимент</b> — главный активный метод психологии. Исследователь сам создаёт условия, чтобы вызвать нужное психическое явление, и может менять эти условия.\n\n<b>Виды экспериментов:</b>\n1. <b>Лабораторный</b> — проходит в искусственных условиях с приборами. Плюс: высокая точность. Минус: человек может вести себя неестественно.\n2. <b>Естественный (А. Лазурский)</b> — проходит в привычной для человека обстановке (игра, урок, работа). Человек часто не знает, что за ним наблюдают.\n3. <b>Констатирующий</b> — просто замеряет тот уровень качеств, который есть прямо сейчас.\n4. <b>Формирующий</b> — в процессе эксперимента человека чему-то обучают или развивают у него навыки."],
+9:["Наблюдение — как метод общей психологии. Виды наблюдений.","<b>Наблюдение</b> — пассивный метод. Исследователь целенаправленно фиксирует поведение человека в естественных условиях, никак не вмешиваясь в процесс.\n\n<b>Виды наблюдения:</b>\n• <b>Внешнее</b> (за другими людьми) и <b>внутреннее</b> (самонаблюдение / интроспекция).\n• <b>Включённое</b> (исследователь сам становится частью группы) и <b>невключённое</b> (смотрит строго со стороны).\n• <b>Сплошное</b> (фиксируется абсолютно всё) и <b>выборочное</b> (замечают только конкретные реакции, например, агрессию).\n• <b>Систематическое</b> (регулярное по графику) и <b>однократное</b>.\n\n<b>Главный минус:</b> высокий субъективизм (наблюдатель может додумать то, чего нет)."],
+10:["Беседа — как метод психологии.","<b>Беседа</b> — устный метод получения информации через прямой контакт и речевое общение по заранее подготовленному плану.\n\n<b>Виды беседы:</b>\n1. <b>Стандартизированная</b> — строгий опросник, одинаковые вопросы в одинаковом порядке для всех.\n2. <b>Свободная (нестандартизированная)</b> — гибкое интервью, вопросы меняются по ходу разговора.\n3. <b>Полуструктурированная</b> — есть костяк вопросов, но можно отходить от темы.\n\n<b>Правила:</b> обязательное создание атмосферы доверия, запрет на наводящие вопросы («Правда же, что вы боитесь?»), фиксация невербальных реакций (жесты, мимика)."],
+11:["Тестирование — как метод общей психологии. Требования к тестам.","<b>Тестирование</b> — метод быстрой диагностики с помощью коротких стандартных заданий (тестов) для получения числовой или качественной оценки.\n\n<b>Главные требования к тестам:</b>\n1. <b>Стандартизация</b> — одинаковые инструкции, время и правила подсчёта для всех.\n2. <b>Надёжность</b> — точность работы теста при повторном замере.\n3. <b>Валидность</b> — тест проверяет именно заявленное качество.\n4. <b>Наличие норм</b> — шкала результатов, полученная на тысячах людей, с которой сравнивают ответ конкретного человека."],
+12:["Виды тестов: проективные, стандартизированные, смешанные.","<b>1. Стандартизированные (объективные):</b> тесты с готовыми вариантами ответов или четкими задачами. Дают сухие цифры. <i>Примеры: тесты IQ Векслера, опросник Кеттелла, Айзенка.</i>\n\n<b>2. Проективные:</b> тесты на работу с неопределенным материалом (картинки, пятна, незаконченные фразы). Человек проецирует на них свои скрытые страхи и мысли. <i>Примеры: пятна Роршаха, ТАТ, рисунок «Несуществующее животное». Плюс: видят подсознание. Минус: сложно оценивать объективно.</i>\n\n<b>3. Смешанные:</b> соединяют оба подхода. <i>Пример: тест незаконченных предложений.</i>"],
+13:["Особенности психики человека. Структура психики. Основные функции психики.","<b>Психика</b> — это свойство мозга отражать окружающий мир и на этой основе управлять поведением.\n\n<b>Главные функции психики:</b> отражение реальности, регуляция поведения, сохранение целостности организма.\n\n<b>Чем человек отличается от животных:</b> у человека есть сознание, речь, абстрактное мышление, способность к труду и передаче опыта через поколения.\n\n<b>Структура психики (3 блока):</b>\n1. <b>Процессы</b> (ощущение, память, мышление).\n2. <b>Состояния</b> (бодрость, уныние, стресс).\n3. <b>Свойства</b> (характер, темперамент)."],
+14:["Развитие психики в онтогенезе. Формирование высших психических функций.","<b>Онтогенез</b> — развитие психики конкретного человека от рождения до смерти.\n\n<b>Высшие психические функции (ВПФ)</b> — это чисто человеческие функции: логическая память, речь, понятийное мышление, произвольное внимание. \n\n<b>Концепция Л.С. Выготского о ВПФ:</b>\n• ВПФ имеют <b>социальное происхождение</b>. Сначала функция существует вовне — как общение ребенка со взрослым, а потом переходит внутрь (процесс <b>интериоризации</b>).\n• <b>Зона ближайшего развития (ЗБР)</b> — дела, которые ребенок сегодня может сделать только с помощью взрослого, а завтра сделает сам. Обучение должно вести за собой развитие."],
+15:["Сознание как высшая форма отражения действительности. Психологическая структура сознания. Сознание и бессознательное.","<b>Сознание</b> — высший, чисто человеческий уровень работы психики. Появляется только благодаря общению и труду.\n\n<b>Структура сознания (по А.Н. Леонтьеву):</b>\n1. <b>Чувственная ткань</b> — живые образы мира, которые мы видим, слышим и ощущаем.\n2. <b>Значения</b> — общие понятия, зафиксированные в словах и языке (понятны всем людям).\n3. <b>Личностный смысл</b> — субъективное значение чего-либо лично для меня (например, «машина» вообще и «моя машина»).\n\n<b>Бессознательное</b> — пласт психики, который нами не осознается (автоматизмы, сны, оговорки, скрытые влечения по Фрейду). Сознание и бессознательное работают вместе."],
+16:["Характеристика психического отражения. Уровни и виды психического отражения.","<b>Психическое отражение</b> — это не пассивное зеркало. Это активный, субъективный и опережающий процесс (мозг прогнозирует будущее).\n\n<b>Уровни отражения:</b>\n1. <b>Сенсорный</b> — уровень отдельных ощущений (свет, тепло).\n2. <b>Перцептивный</b> — уровень целостных образов предметов (вижу яблоко целиком).\n3. <b>Уровень представлений</b> — образы предметов, которых сейчас нет перед глазами (всплывают из памяти).\n4. <b>Речемыслительный (вербальный)</b> — уровень понятий, логики и суждений.\n\n<b>Виды отражения:</b> чувственное (органы чувств), рациональное (ум) и эмоциональное (переживания)."],
+17:["Понятие об ощущениях. Виды ощущений и их психологические особенности. Основные свойства ощущений. Закон Вебера-Фехнера.","<b>Ощущение</b> — простейший процесс. Мозг отражает лишь <i>отдельные</i> свойства предмета (только его цвет, только холод или только звук), когда этот предмет прямо воздействует на органы чувств.\n\n<b>Виды ощущений (по Шеррингтону):</b>\n• <b>Экстероцептивные</b> (внешние): зрение, слух, вкус, обоняние, осязание.\n• <b>Интероцептивные</b> (внутренние): сигналы от органов (голод, жажда, боль в желудке).\n• <b>Проприоцептивные</b> (мышечные): ощущение положения своего тела в пространстве.\n\n<b>Закон Вебера-Фехнера:</b> сила ощущения растет медленнее, чем сила раздражителя (пропорционально логарифму). Чтобы мы почувствовали разницу, сильный фоновый раздражитель нужно увеличить очень ощутимо (например, добавить свечу в темной комнате или при ярком свете)."],
+18:["Понятие о восприятии. Виды восприятия и их психологические особенности. Психофизиология восприятия.","<b>Восприятие</b> — это построение <i>целостного</i> образа предмета (я вижу не просто зеленое и круглое, а вижу «яблоко»).\n\n<b>Основные свойства восприятия:</b>\n• <b>Предметность</b> — мы связываем образ с конкретным объектом в мире.\n• <b>Целостность</b> — мозг достраивает образ, даже если видит деталь.\n• <b>Константность</b> — мы воспринимаем размер и цвет предмета одинаково при разном освещении и расстоянии.\n• <b>Осмысленность</b> — мы всегда понимаем и называем то, что видим.\n• <b>Апперцепция</b> — зависимость восприятия от нашего прошлого опыта и настроения.\n\n<b>Виды:</b> восприятие пространства, времени, движения; зрительное, слуховое, тактильное."],
+19:["Память. Процессы памяти. Характеристика и значение процессов памяти. Эксперименты Г. Эббингауза. Понятие о законе Т. Рибо.","<b>Память</b> — это накопление, сохранение и выдача прошлого опыта.\n\n<b>4 процесса памяти:</b> Запоминание $\rightarrow$ Сохранение $\rightarrow$ Воспроизведение (узнавание, припоминание) $\rightarrow$ Забывание.\n\n<b>Эксперименты Г. Эббингауза:</b> изучал память с помощью заучивания бессмысленных слогов. Открыл <b>кривую забывания</b>: быстрее всего информация теряется в первые часы после заучивания (до 60% за первый час), затем график выравнивается. Отсюда вывод — повторять нужно сразу.\n\n<b>Закон Т. Рибо (закон регрессии):</b> при болезнях и амнезиях память разрушается от настоящего к прошлому. Сначала забывается то, что было вчера, а дольше всего хранятся воспоминания из глубокого детства."],
+20:["Виды памяти и их психологические характеристики.","<b>1. По характеру активности (что запоминаем):</b>\n• Двигательная (моторные навыки, езда на велосипеде).\n• Образная (лица, пейзажи, звуки, вкусы).\n• Эмоциональная (пережитые чувства — запоминается лучше всего).\n• Словесно-логическая (тексты, мысли, формулы).\n\n<b>2. По времени удержания:</b>\n• Сенсорная (мгновенный след от вспышки света или звука, до 0.5 сек).\n• Кратковременная (память прямо сейчас, объем ограничен: $7 \pm 2$ элементов по Миллеру, живет секунд 30).\n• Долговременная (навсегда, объем бесконечен).\n• Оперативная (удерживает данные на время выполнения конкретного действия, например, пока решаем пример).\n\n<b>3. По наличию цели:</b> непроизвольная (само запомнилось) и произвольная (учим специально)."],
+21:["Формирование и развитие памяти.","Память развивается от механической и непроизвольной (в детстве) к логической и управляемой (у взрослых). Сначала у ребенка формируется двигательная и эмоциональная память, затем образная, и в школе — словесно-логическая.\n\n<b>Условия успешного запоминания:</b>\n1. Наличие четкой цели и установки («мне нужно это сдать»).\n2. <b>Понимание сути</b> — осмысленное запоминание в 9 раз эффективнее тупой зубрежки.\n3. Распределенное повторение (не учить всё в последнюю ночь, а делать паузы).\n4. Использование мнемотехник (ассоциации, схемы, группировка данных).\n5. Активное воспроизведение (пересказывать вслух самому себе, а не просто перечитывать)."],
+22:["Основные психологические методики исследования памяти.","1. <b>Методика «10 слов» (А.Р. Лурия)</b> — зачитывают 10 простых слов, человек повторяет. Проверяет объем кратковременной памяти и утомляемость.\n2. <b>«Пиктограмма» (А.Р. Лурия)</b> — человеку нужно запомнить абстрактные фразы, зарисовывая их значками (без букв). Оценивает логическую память и мышление.\n3. <b>Метод заучивания (Эббингауз)</b> — подсчет количества повторений, нужных для идеального запоминания ряда.\n4. <b>Воспроизведение рассказа</b> — человеку читают текст, он должен передать смысл. Оценивает смысловую память.\n5. <b>Запоминание пар слов</b> — проверка ассоциативной памяти."],
+23:["Внимание как психологический феномен. Физиологические основы внимания. Функции внимания.","<b>Внимание</b> — это не отдельный процесс, а направленность и сосредоточенность нашего сознания на конкретном объекте. Оно как бы подсвечивает нужную информацию и отсекает лишнюю.\n\n<b>Функции:</b> отбор важного, фильтрация шума, контроль и удержание деятельности.\n\n<b>Физиологическая основа:</b>\n1. <b>Принцип доминанты (А. Ухтомский)</b>: в мозге возникает главный очаг возбуждения. Он забирает себе всю энергию и гасит остальные очаги (когда мы увлечены книгой, мы не слышим, что нас зовут).\n2. <b>Ориентировочный рефлекс (И. Павлов)</b>: реакция «что такое?» — врожденный рефлекс на любой резкий звук или свет. Основа непроизвольного внимания."],
+24:["Виды внимания и их сравнительная характеристика.","<b>1. Непроизвольное (пассивное):</b> включается само, без усилий воли. Триггеры: громкий звук, яркая вспышка, всё новое или то, что связано с базовыми потребностями (еда, опасность).\n\n<b>2. Произвольное (активное):</b> требует сознательных волевых усилий. Мы заставляем себя удерживать фокус ради цели (например, учить билеты). Быстро утомляет.\n\n<b>3. Послепроизвольное (Н. Добрынин):</b> идеальное состояние для работы. Сначала мы заставляем себя волей (произвольно), но потом процесс становится настолько интересным, что волевые усилия исчезают, а глубокая концентрация остается. Человек не устает."],
+25:["Основные свойства внимания. Устойчивость и концентрация внимания.","<b>Свойства внимания</b> — это его рабочие характеристики:\n\n• <b>Устойчивость</b> — способность долго держать фокус на одной задаче без отвлечений. Зависит от сложности работы и интереса. Короткие микро-колебания внимания раз в пару секунд (флуктуации) — это нормальная защита мозга от перегрузки.\n\n• <b>Концентрация</b> — степень «глубины» погружения в задачу. Высокая концентрация означает, что человек полностью поглощен делом и не замечает внешних раздражителей.\n\n• <i>Противоположность концентрации — рассеянность. Она бывает истинной (человек постоянно скачет с мысли на мысль) и мнимой (профессорская — когда человек так сильно сконцентрирован на своей мысли, что забывает про внешний мир).</i>"],
+26:["Основные свойства внимания. Объём и распределение внимания.","• <b>Объём внимания</b> — сколько объектов мозг может четко схватить за одну долю секунды. Закон Миллера: объем равен <b>$7 \pm 2$ элементов</b>.\n\n• <b>Распределение внимания</b> — способность успешно делать два или более дел одновременно. Главное условие: хотя бы одно из этих дел должно быть доведено до полного автоматизма (например, вести машину и разговаривать).\n\n• <b>Переключаемость</b> — осознанный, намеренный перенос фокуса с одной задачи на другую. Зависит от подвижности нервной системы. <i>Не путать с отвлекаемостью (когда внимание уходит непроизвольно на внешний шум).</i>"],
+27:["Основные психологические методики исследования внимания.","1. <b>Таблицы Шульте</b> — поиск чисел от 1 до 25 в случайном порядке в квадрате. Проверяет скорость, объем и устойчивость внимания.\n2. <b>Корректурная проба Бурдона</b> — страница с хаотичным набором букв, где нужно вычеркивать только заданные буквы. Оценивает концентрацию и утомляемость.\n3. <b>Красно-чёрные таблицы (Горбов)</b> — усложненный поиск цифр двух цветов по разным правилам. Оценивает переключаемость и распределение.\n4. <b>Тест Струпа</b> — человеку дают слова-названия цветов, написанные другим цветом (слово «Красный» написано синими чернилами), нужно называть именно цвет чернил. Проверяет избирательность и помехоустойчивость."],
+28:["Общее понятие о мышлении. Отличительные характеристики мышления.","<b>Мышление</b> — это высший познавательный процесс, с помощью которого мозг находит скрытые связи между предметами и создает <b>новое знание</b>, которого не было в личном опыте.\n\n<b>Главные отличительные черты мышления:</b>\n1. <b>Опосредованность:</b> мы узнаем о скрытых свойствах через посредников (видим градусник за окном $\rightarrow$ понимаем, что там холодно, хотя сами на улицу не выходили).\n2. <b>Обобщенность:</b> мозг объединяет предметы в группы по существенным признакам (все стулья мира — это «мебель»).\n3. <b>Связь с речью:</b> мы думаем словами, мысль формируется и выражается через язык.\n4. <b>Проблемный характер:</b> мышление включается только тогда, когда возникает задача или препятствие."],
+29:["Основные операции мышления: анализ, синтез, конкретизация, сравнение.","Операции — это инструменты (умственные действия), которыми мы думаем:\n\n• <b>Анализ</b> — мысленное разделение целого предмета на части или детали.\n• <b>Синтез</b> — мысленное сборка целого из отдельных частей (противоположность анализу, всегда работают в паре).\n• <b>Сравнение</b> — поиск сходств и различий между объектами.\n• <b>Абстрагирование</b> — выделение только одного важного свойства и игнорирование всех остальных (например, берем только форму предмета, забывая про цвет и вес).\n• <b>Обобщение</b> — объединение предметов в группу по общему признаку.\n• <b>Конкретизация</b> — переход от общего правила к частному живому примеру."],
+30:["Формы мышления (понятие, суждение, умозаключение).","Мышление существует в 3 логических формах:\n\n1. <b>Понятие</b> — слово или термин, отражающий суть предмета (например: «собака», «треугольник»). Понятия бывают житейскими и научными.\n2. <b>Суждение</b> — фраза, в которой мы что-то утверждаем или отрицаем обо всем мире. Может быть истинным или ложным (например: «Все металлы проводят ток»).\n3. <b>Умозаключение</b> — вывод. Логическая связка из нескольких суждений (посылок), которая дает новую мысль.\n   • <i>Дедукция:</i> от общего правила к частному («Все люди смертны $\rightarrow$ Сократ человек $\rightarrow$ Сократ смертен»).\n   • <i>Индукция:</i> от частных фактов к общему выводу.\n   • <i>Аналогия:</i> вывод на основе сходства предметов."],
+31:["Виды мышления и их характеристика.","<b>1. По форме (эволюционное развитие):</b>\n• Наглядно-действенное (мышление руками): решение задачи через реальные движения предметами (развито у детей до 3 лет, у автомехаников).\n• Наглядно-образное: решение задачи через манипуляцию картинками и образами в голове (дошкольники, художники).\n• Словесно-логическое (абстрактное): мышление понятиями, логикой и формулами без картинок перед глазами (высшая форма, ученые).\n\n<b>2. По характеру задач:</b> теоретическое (изучение законов) и практическое (реальные дела прямо сейчас).\n\n<b>3. По новизне:</b> репродуктивное (по готовому шаблону) и продуктивное (творческое, поиск нового пути)."],
+32:["Генетическая психология Ж. Пиаже в понимании развития мышления. Стадии развития мышления.","Жан Пиаже доказал, что мышление ребенка качественно отличается от мышления взрослого и развивается через адаптацию (баланс между <i>ассимиляцией</i> — встраиванием мира в свои схемы, и <i>аккомодацией</i> — изменением своих схем под мир).\n\n<b>4 стадии развития интеллекта:</b>\n1. <b>Сенсомоторная</b> (0–2 года): ребенок познает мир только через движения рук и восприятие чувств.\n2. <b>Дооперациональная</b> (2–7 лет): появляется речь. Мышление <b>эгоцентрично</b> (ребенок уверен, что все видят мир точно так же, как он) и анимистично (оживляет игрушки).\n3. <b>Конкретные операции</b> (7–11 лет): появляется логика, но только для живых предметов перед глазами. Понимает, что объем воды не меняется, если перелить её из широкого стакана в узкий.\n4. <b>Формальные операции</b> (с 11–12 лет): абстрактное мышление. Способность строить гипотезы, думать о будущем и понимать формулы."],
+33:["Основные психологические методики исследования мышления.","1. <b>«Исключение лишнего»</b> — из 4 картинок убрать одну и назвать общий признак для остальных. Проверяет обобщение и абстрагирование.\n2. <b>«Выделение существенных признаков»</b> — к слову «Сад» дают варианты: <i>растения, забор, земля, собака, лопата</i>. Нужно выбрать два главных слова, без которых сада не бывает (растения, земля).\n3. <b>«Простые аналогии»</b> — Ложка:Каша = Нож:? (Мясо). Оценивает логические связи.\n4. <b>Матрицы Равена</b> — невербальный тест на поиск закономерностей в геометрических фигурах.\n5. <b>Последовательность событий</b> — разложить сюжетные картинки по порядку и составить связный рассказ (проверяет логику причин и следствий)."],
+34:["Понятие об интеллекте. Виды интеллекта, способы его диагностики.","<b>Интеллект</b> — общая способность мозга адаптироваться к жизни, эффективно учиться и решать любые проблемы.\n\n<b>Теории структуры интеллекта:</b>\n• Спирмен: есть Общий фактор интеллекта (G-фактор), который определяет успешность в любой сфере.\n• Терстоун: выделил 7 независимых качеств (счет, память, речь, пространственная ориентация).\n• Стернберг: три типа интеллекта — аналитический, творческий и практический.\n\n<b>Виды:</b> вербальный (словесный), невербальный (логика образов), социальный (понимание людей), эмоциональный (EQ).\n\n<b>Диагностика:</b> классический тест <b>Векслера</b> (дает общую оценку IQ, средняя норма — 100 баллов), матрицы Равена, тест структуры интеллекта Амтхауэра."],
+35:["Речь как инструмент мышления и речь как средство общения.","<b>Язык</b> — это система знаков и слов, а <b>речь</b> — это сам процесс использования языка человеком.\n\n<b>Две главные ипостаси речи:</b>\n1. <b>Средство общения (коммуникация):</b> передача информации, эмоций и воздействие на других людей.\n2. <b>Инструмент мышления:</b> мы думаем словами. Выготский писал: «Мысль совершается в слове». Главный инструмент ума — <b>внутренняя речь</b> (беззвучный разговор с самим собой, свернутый и быстрый, где мы планируем действия).\n\n<b>Виды речи:</b> внешняя (устная и письменная) и внутренняя. Устная делится на диалог и монолог."],
+36:["Формирование и развитие речи.","Речь формируется строго в социуме, через общение со взрослыми.\n\n<b>Этапы развития речи ребенка:</b>\n1. <b>Предречевой</b> (до 1 года): крик $\rightarrow$ гуление (гласные звуки в 2-3 мес.) $\rightarrow$ лепет (слоги ма-ма, ба-ба в 6 мес.) $\rightarrow$ к году первые понятные слова.\n2. <b>Ранний возраст</b> (1–3 года): взрывной рост словаря (к 3 годам около 1500 слов). Ребенок начинает строить фразы и предложения.\n3. <b>Дошкольный</b> (3–7 лет): ребенок осваивает грамматику, активно формируется внутренняя речь, язык становится инструментом мышления.\n4. <b>Школьный</b>: освоение письменной речи (чтение и письмо), сознательное расширение словарного запаса."],
+37:["Виды воображения и их психологическая характеристика.","<b>Воображение</b> — процесс создания новых образов на основе перестройки прошлого опыта. Помогает действовать в условиях неопределенности.\n\n<b>Классификация видов:</b>\n1. <b>Непроизвольное (пассивное):</b> образы всплывают сами без воли человека. Проявляется в сновидениях, грезах или при галлюцинациях.\n2. <b>Произвольное (активное):</b> сознательное построение образов ради цели.\n   • <i>Воссоздающее:</i> построение образа по чужому описанию (читаем книгу и представляем героя, смотрим на чертеж).\n   • <i>Творческое:</i> создание принципиально нового образа с нуля (изобретения, искусство).\n\n<b>Приёмы воображения:</b> агглютинация (склеивание частей, как Кентавр), гиперболизация (увеличение/уменьшение, как Гулливер), типизация (сбор черт в один образ)."],
+38:["Определение эмоций. Функции эмоций. Основные отличия эмоций от чувств.","<b>Эмоции</b> — это мгновенные психические реакции в форме переживаний, которые показывают, насколько ситуация полезна или вредна лично для человека.\n\n<b>Функции эмоций:</b> сигнальная (мгновенная оценка), мотивационная (побуждают бежать или нападать), коммуникативная (мимика показывает другим наше состояние), регуляторная.\n\n<b>Разница между эмоциями и чувствами:</b>\n• <b>Эмоции:</b> кратковременны, привязаны к ситуации прямо сейчас, биологичны по природе, есть у животных (гнев, страх при виде вспышки).\n• <b>Чувства:</b> длительные, глубокие, устойчивые социальные отношения. Присущи только человеку (любовь к Родине, дружба, зависть). Не зависят от минутной ситуации."],
+39:["Физиологическая основа эмоций. Классификация эмоций. Свойства эмоций.","<b>Физиология:</b> за эмоции отвечает <b>лимбическая система</b> головного мозга (особенно миндалевидное тело) + вегетативная нервная система, которая дает телесный ответ (сердцебиение, пот, адреналин).\n\n<b>Классификация эмоций:</b>\n• <b>По знаку:</b> Положительные (радость) и Отрицательные (страх, гнев).\n• <b>По силе и длительности:</b>\n  1. <i>Настроение</i> (слабый, долгий эмоциональный фон).\n  2. <i>Аффект</i> (вспышка! Дикая сила, короткая, отключает разум, сужает сознание, человек себя не контролирует).\n  3. <i>Страсть</i> (мощное, очень долгое чувство, захватывает всю личность).\n• <b>По мобилизации:</b> Стенические (дают силы, толкают в бой — гнев) и Астенические (обессиливают, парализуют — тоска, страх)."],
+40:["Основные психологические методики исследования эмоциональной сферы.","1. <b>Опросник «САН»</b> — быстрый тест на оценку текущего состояния по трем шкалам: Самочувствие, Активность, Настроение.\n2. <b>Тест Спилбергера-Ханина</b> — разделяет тревожность на два типа: <i>ситуативную</i> (волнение прямо сейчас перед зачетом) и <i>личностную</i> (устойчивое свойство человека тревожиться всегда по жизни).\n3. <b>Шкала Бека (BDI)</b> — классический тест-опросник на выявление уровня депрессии.\n4. <b>Цветовой тест Люшера</b> — проективный тест. Человек выбирает цвета от самых приятных к неприятным. Раскрывает реальное эмоциональное состояние в обход сознания.\n5. <b>Объективные замеры</b>: КГР (детектор лжи), замер частоты пульса, мимики."],
+41:["Понятие об эмоциональном интеллекте. Эмпатия.","<b>Эмоциональный интеллект (EQ)</b> — способность понимать свои собственные эмоции, управлять ими, а также распознавать чувства других людей для эффективного общения.\n\n<b>Модель Гоулмана включает 5 опор:</b> самопознание, саморегуляция, мотивация, эмпатия, социальные навыки.\n\n<b>Эмпатия</b> — способность сопереживать, «вчувствоваться» в чужие эмоциональные страдания, понимать чужую боль.\n\n<b>3 вида эмпатии:</b>\n1. <i>Когнитивная</i> — я просто умом понимаю, что человеку плохо.\n2. <i>Аффективная</i> — я физически заражаюсь чужой эмоцией (плачу вместе с ним).\n3. <i>Действенная</i> — я понимаю, сопереживаю и иду активно помогать."],
+42:["«Личность» как психологическое понятие. Соотношение биологического и социального в структуре личности человека.","<b>Индивид</b> — человек просто как биологическая особь, представитель Homo sapiens (у всех есть руки, ноги, мозг).\n<b>Личность</b> — человек как социальное существо, субъект отношений и сознательной деятельности. Личностью не рождаются, ей становятся в процессе общения и жизни в обществе.\n<b>Индивидуальность</b> — уникальное сочетание биологических и социальных черт, отличие от всех остальных людей.\n\n<b>Биологическое vs Социальное:</b> биология (гены, анатомия, темперамент) — это лишь природный фундамент. Социальное (воспитание, культура, окружение) — это то, что строит личность на этом фундаменте. \n\n<b>Структура личности (по К. Платонову):</b> Направленность (ценности, цели) $\rightarrow$ Опыт (знания, навыки) $\rightarrow$ Особенности психических процессов $\rightarrow$ Биопсихические свойства (темперамент)."],
+43:["Психологическая диагностика особенностей личности.","Это замер устойчивых качеств человека с помощью специальных инструментов.\n\n<b>Главные методы:</b>\n1. <b>Личностные опросники (сухие цифры):</b>\n   • <i>MMPI</i> — гигантский тест на скрытые патологии, типы личности и психологические защиты.\n   • <i>16-PF Кеттелла</i> — строит профиль личности по 16 ключевым чертам.\n   • <i>Опросник Айзенка (EPI)</i> — определяет два параметра: Экстраверсию/Интроверсию и Нейротизм (уровень эмоциональной стабильности).\n2. <b>Проективные тесты (скрытые мотивы):</b> пятна Роршаха, рисунки.\n3. <b>Клинические методы:</b> наблюдение за поведением и глубинная беседа."],
+44:["Понятие темперамента. Морфологическая основа темперамента в подходах У. Шелдона.","<b>Темперамент</b> — это врожденная биологическая основа психики. Он определяет темп, скорость, ритм и силу психических реакций человека, но не определяет его характер или ум.\n\n<b>Конституциональная теория У. Шелдона (связь формы тела и темперамента):</b>\n1. <b>Эндоморф</b> (полный, мягкий, круглый) $\rightarrow$ тип темперамента: <i>Висцеротоник</i> (любит комфорт, еду, очень общительный, расслабленный).\n2. <b>Мезоморф</b> (атлет, развитые мышцы, кости) $\rightarrow$ тип темперамента: <i>Соматотония</i> (энергичный, агрессивный, любит риск, власть, физическую активность).\n3. <b>Эктоморф</b> (худой, высокий, хрупкий) $\rightarrow$ тип темперамента: <i>Церебротония</i> (скрытный, робкий, зажатый, склонен к одиночеству и размышлениям).\n\n<i>Критика: связь между формой тела и психикой научно слабая, теория считается устаревшей.</i>"],
+45:["Связь темперамента и типов высшей нервной деятельности. Классификация темперамента в понимании И.П. Павлова.","И.П. Павлов доказал, что основа темперамента — это свойства нервной системы. Их три: <b>Сила</b> (выносливость клеток), <b>Уравновешенность</b> (баланс между возбуждением и торможением), <b>Подвижность</b> (скорость смены процессов).\n\n<b>4 типа высшей нервной деятельности (ВНД) и темпераменты:</b>\n1. <b>Сильный, уравновешенный, подвижный</b> $\rightarrow$ <b>Сангвиник</b>. Живой, общительный, быстро адаптируется, продуктивный.\n2. <b>Сильный, уравновешенный, инертный</b> $\rightarrow$ <b>Флегматик</b>. Спокойный, медлительный, хладнокровный, упорный, тяжело переключается.\n3. <b>Сильный, неуравновешенный</b> (возбуждение сильнее торможения) $\rightarrow$ <b>Холерик</b>. Вспыльчив, порывист, агрессивен, страстен, быстро истощается.\n4. <b>Слабый тип</b> (нервные клетки быстро сдаются) $\rightarrow$ <b>Меланхолик</b>. Раним, дико чувствителен, боязлив, быстро утомляется, склонен к грусти."],
+46:["Понятие о характере. Характер и система отношений человека.","<b>Характер</b> — это приобретенный в течение жизни каркас личности, набор устойчивых привычек поведения человека. Формируется средой и воспитанием (в отличие от врожденного темперамента).\n\n<b>Характер и система отношений (по В.Н. Мясищеву):</b>\nЧерты характера всегда проявляются через то, как человек относится к четырем сферам мира:\n1. <b>К другим людям:</b> общительность или замкнутость, доброта или эгоизм, тактичность или грубость.\n2. <b>К труду / своему делу:</b> трудолюбие или лень, ответственность или пофигизм, аккуратность.\n3. <b>К вещам:</b> бережливость или расточительность, неряшливость.\n4. <b>К самому себе:</b> самокритичность, скромность или гордыня, эгоцентризм."],
+47:["Акцентуация характера. Типология акцентуаций характера в подходе А.Е. Личко.","<b>Акцентуация</b> — это крайний вариант нормы. Какая-то одна черта характера усилена до предела, из-за чего человек становится дико уязвим к одним стрессам, но устойчив к другим. Это НЕ психическая болезнь.\n\n<b>Основные типы по А. Личко (для подростков):</b>\n• <b>Гипертимный:</b> вечный позитив, фонтан энергии, общителен, легкомыслен, лезет в авантюры.\n• <b>Циклоидный:</b> настроение скачет фазами — недели две он гипертим (все супер), затем две недели в депрессии и упадке сил.\n• <b>Лабильный:</b> настроение меняется резко по 10 раз за день от любой мелочи.\n• <b>Астено-невротический:</b> ипохондрик, вечно уставший, раздражительный, зациклен на болячках.\n• <b>Сенситивный:</b> робкий, застенчивый, дико чувствителен к критике, закомплексован.\n• <b>Шизоидный:</b> замкнут, живет в своем мире, холодный снаружи, не умеет сопереживать, одиночка.\n• <b>Эпилептоидный:</b> педант, жуткий собственник, аккуратист, склонен к приступам жестокости и злости.\n• <b>Истероидный:</b> жаждет внимания любой ценой! Демонстративен, эгоцентричен, симулянт."],
+48:["Адаптация, виды адаптации и адаптационный синдром.","<b>Адаптация</b> — процесс приспособления организма к изменениям среды ради выживания и сохранения стабильности (гомеостаза).\n\n<b>Виды адаптации:</b> биологическая (привыкание зрачка к темноте), психологическая (перестройка поведения при стрессе), социальная (принятие правил нового коллектива), профессиональная.\n\n<b>Общий адаптационный синдром (Г. Селье):</b>\nЭто стандартный биологический ответ организма на сильный стресс. Проходит <b>3 стадии:</b>\n1. <b>Стадия тревоги (аларм-реакция):</b> шок, выброс гормонов (адреналин, кортизол), мобилизация всех сил.\n2. <b>Стадия резистентности (сопротивления):</b> организм приспособился и работает на пике возможностей, борясь со стрессом.\n3. <b>Стадия истощения:</b> если стресс слишком долгий, ресурсы сгорают. Организм ломается, возникают болезни."],
+49:["Стресс. Виды стрессов и защитное поведение. Факторы, предрасполагающие к развитию пограничных психических расстройств.","<b>Стресс</b> — неспецифическая реакция напряжения организма на любое сильное требование среды.\n\n<b>Виды стресса:</b>\n• <b>Эустресс</b> — полезный стресс. Короткая встряска, мобилизует силы, помогает сдать экзамен.\n• <b>Дистресс</b> — вредный стресс. Хронический, долгий, разрушает психику и здоровье.\n• <i>По природе стрессоры бывают физиологическими (холод, боль) и психологическими (обида, страх).</i>\n\n<b>Защитное поведение (Копинг-стратегии):</b>\n1. Проблемно-ориентированный копинг: активное решение проблемы (сесть и выучить).\n2. Эмоционально-ориентированный: работа с эмоциями (поплакать, успокоиться).\n3. Избегание: уход от проблемы (напиться, залипнуть в игры, сделать вид, что зачета нет).\n\n<b>Факторы риска расстройств:</b> высокий нейротизм, детские травмы, отсутствие поддержки, истощение мозга."],
+50:["Понятие о «внутренней картине болезни». Типы отношения к болезни и их прогностическое значение. Диагностика типов отношения к болезни.","<b>Внутренняя картина болезни (ВКБ, Р. Лурия)</b> — это то, как сам пациент видит, чувствует и понимает свою болезнь. Весь комплекс его переживаний.\n\n<b>4 уровня ВКБ:</b> сенсорный (чувство боли), эмоциональный (страх смерти/инвалидности), интеллектуальный (то, что пациент знает о диагнозе), мотивационный (что он делает ради лечения).\n\n<b>Основные типы отношения к болезни (тест ТОБОЛ):</b>\n• <b>Гармоничный</b> — трезвая, адекватная оценка, четкое выполнение указаний врача (лучший прогноз).\n• <b>Ипохондрический</b> — зацикленность на симптомах, преувеличение тяжести, поиск несуществующих болячек.\n• <b>Анозогнозический</b> — полное отрицание болезни («я здоров, лечиться не буду»).\n• <b>Эгоцентрический</b> — уход в болезнь, требование, чтобы все прыгали вокруг него.\n• <b>Паранойяльный</b> — уверенность, что болезнь подстроена врагами, а врачи хотят навредить."],
+51:["Психосоматика — определение, возможные причины. Понятия «психосоматические реакции», «психосоматические состояния» и «психосоматические заболевания».","<b>Психосоматика</b> — направление на стыке медицины и психологии. Изучает, как душевные травмы, стресс и подавленные эмоции вызывают реальные телесные болезни.\n\n<b>Три уровня психосоматических расстройств:</b>\n1. <b>Психосоматические реакции:</b> сиюминутные телесные ответы на эмоцию. Покраснел от стыда, затряслись руки от страха, подскочил пульс. Это норма, органы здоровы.\n2. <b>Психосоматические состояния (функциональные):</b> затяжные нарушения работы органов без их физического разрушения. Психогенная тошнота, мигрени от стресса, синдром раздраженного кишечника. Органы целы, но работают со сбоями. Обратимо.\n3. <b>Психосоматические заболевания (органические):</b> реальное физическое разрушение ткани органа из-за хронического стресса. <i>«Святая семерка» психосоматики: язва желудка, бронхиальная астма, гипертония, нейродермит, язвенный колит, ревматоидный артрит, зоб.</i>"],
+52:["Психология лечебно-диагностического процесса. Виды общения в диаде «врач-пациент». Основные предпосылки общения врача и пациента.","<b>Лечебно-диагностический процесс</b> — это не просто выписка таблеток, это психологический контакт. Главное здесь — доверие пациента и эмпатия врача.\n\n<b>Виды общения в диаде:</b> вербальное (слова, сбор анамнеза), невербальное (мимика, позы, опрятный вид врача), паравербальное (интонация, теплый и спокойный тембр голоса).\n\n<b>Модели общения:</b>\n• <i>Патерналистская</i> (врач как строгий отец, пациент — послушный ребенок, приказы не обсуждаются).\n• <i>Совещательная / Партнерская</i> (врач и пациент совместно принимают решения, высокая комплаентность).\n\n<b>Ятрогения</b> — вред здоровью пациента (психическая травма или ухудшение состояния), нанесенный неосторожным, резким или грубым словом врача."],
+53:["Педагогика как наука. Педагогические составляющие деятельности врача. Структура педагогики. Связь педагогики и психологии. Основы медико-просветительской деятельности врача.","<b>Педагогика</b> — наука об обучении, воспитании и образовании человека.\n<b>Структура:</b> дидактика (теория обучения), теория воспитания, школоведение, специальная педагогика.\n\n<b>Связь с психологией:</b> педагогика не может учить человека, не зная законов его психики (как работают его память, внимание, мышление).\n\n<b>Зачем педагогика врачу:</b>\nСовременный врач — это во многом педагог. Он занимается <b>медико-просветительской деятельностью</b>:\n• Обучает пациента правильно принимать лекарства, соблюдать диету и менять образ жизни.\n• Формирует <b>комплаентность</b> (осознанную приверженность лечению).\n• Проводит санитарное просвещение (лекции, школы здоровья, буклеты о вреде курения).\n• Принципы просвещения: доступность языка (без сложных терминов), наглядность, конкретность."],
+};
+
+/* ===================== STATE ===================== */
+const TOTAL = 53;
+let studied = new Set();
+try{
+  const saved = JSON.parse(window.name && window.name.startsWith('SG:') ? window.name.slice(3) : 'null');
+  if(Array.isArray(saved)) studied = new Set(saved);
+}catch(e){}
+
+function persist(){
+  try{ window.name = 'SG:' + JSON.stringify(Array.from(studied)); }catch(e){}
+}
+
+/* ===================== BUILD CHAPTER NAV ===================== */
+const navEl = document.getElementById('chapterNav');
+const RING_R = 8, RING_C = 2*Math.PI*RING_R;
+
+DATA.forEach((ch, idx) => {
+  const a = document.createElement('a');
+  a.className = 'chapter-link';
+  a.href = '#ch-' + ch.id;
+  a.dataset.chapter = ch.id;
+  a.innerHTML = `
+    <div class="ico">${String(idx+1).padStart(2,'0')}</div>
+    <div class="txt"><b>${ch.title}</b><small>${ch.subtitle}</small></div>
+    <div class="ring">
+      <svg viewBox="0 0 20 20">
+        <circle class="t" cx="10" cy="10" r="${RING_R}"></circle>
+        <circle class="f" cx="10" cy="10" r="${RING_R}" stroke-dasharray="${RING_C}" stroke-dashoffset="${RING_C}" data-ring="${ch.id}"></circle>
+      </svg>
+    </div>`;
+  a.addEventListener('click', (e)=>{
+    closeSidebar();
+  });
+  navEl.appendChild(a);
+});
+
+/* ===================== BUILD CHAPTERS / CARDS ===================== */
+const container = document.getElementById('chaptersContainer');
+
+DATA.forEach((ch, idx) => {
+  const section = document.createElement('section');
+  section.className = 'chapter';
+  section.id = 'ch-' + ch.id;
+
+  const head = document.createElement('div');
+  head.className = 'chapter-head';
+  head.innerHTML = `<span class="n">${String(idx+1).padStart(2,'0')}</span><h2>${ch.title}</h2><span class="count" data-count="${ch.id}">0 / ${ch.questions.length}</span>`;
+  section.appendChild(head);
+
+  ch.questions.forEach(qnum => {
+    const [q, a] = QA[qnum];
+    const card = document.createElement('article');
+    card.className = 'qcard';
+    card.dataset.q = qnum;
+    card.dataset.chapter = ch.id;
+
+    const paragraphs = a.split('\n\n').map(p => `<p>${p.replace(/\n/g,'<br>')}</p>`).join('');
+
+    card.innerHTML = `
+      <div class="qhead" tabindex="0" role="button" aria-expanded="false">
+        <div class="stamp">${qnum}</div>
+        <div class="qtext" data-search-text="${q.toLowerCase()}">${q}</div>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="qbody"><div class="qbody-inner" data-search-body="${a.toLowerCase()}">${paragraphs}</div></div>
+    `;
+    section.appendChild(card);
+  });
+
+  container.appendChild(section);
+});
+
+/* ===================== TOGGLE / STUDY TRACKING ===================== */
+document.querySelectorAll('.qhead').forEach(head => {
+  function toggle(){
+    const card = head.closest('.qcard');
+    const body = card.querySelector('.qbody');
+    const isOpen = card.classList.contains('open');
+
+    if(isOpen){
+      card.classList.remove('open');
+      body.style.maxHeight = '0px';
+    } else {
+      card.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+      const qnum = parseInt(card.dataset.q,10);
+      if(!studied.has(qnum)){
+        studied.add(qnum);
+        card.classList.add('studied');
+        persist();
+        updateProgress();
+      }
+    }
+  }
+  head.addEventListener('click', toggle);
+  head.addEventListener('keydown', (e)=>{
+    if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggle(); }
+  });
+});
+
+/* keep open bodies sized correctly on resize */
+window.addEventListener('resize', ()=>{
+  document.querySelectorAll('.qcard.open .qbody').forEach(b=>{
+    b.style.maxHeight = b.scrollHeight + 'px';
+  });
+});
+
+/* ===================== PROGRESS RENDER ===================== */
+function updateProgress(){
+  const total = studied.size;
+  const pct = Math.round((total/TOTAL)*100);
+
+  document.getElementById('overallNum').innerHTML = total + '<span>&nbsp;/&nbsp;'+TOTAL+'</span>';
+  document.getElementById('overallBar').style.width = pct + '%';
+
+  const R = 16, C = 2*Math.PI*R;
+  const fillEl = document.getElementById('topDialFill');
+  fillEl.setAttribute('stroke-dasharray', C);
+  fillEl.setAttribute('stroke-dashoffset', C - (pct/100)*C);
+  document.getElementById('topDialPct').textContent = pct + '%';
+
+  DATA.forEach(ch=>{
+    const doneInCh = ch.questions.filter(q=>studied.has(q)).length;
+    const countEl = document.querySelector(`[data-count="${ch.id}"]`);
+    if(countEl) countEl.textContent = doneInCh + ' / ' + ch.questions.length;
+
+    const ring = document.querySelector(`[data-ring="${ch.id}"]`);
+    if(ring){
+      const p = doneInCh/ch.questions.length;
+      ring.setAttribute('stroke-dashoffset', RING_C - p*RING_C);
+    }
+  });
+
+  // mark already-studied cards (on load)
+  document.querySelectorAll('.qcard').forEach(card=>{
+    const qnum = parseInt(card.dataset.q,10);
+    if(studied.has(qnum)) card.classList.add('studied');
+  });
+}
+updateProgress();
+
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  studied.clear();
+  persist();
+  document.querySelectorAll('.qcard.studied').forEach(c=>c.classList.remove('studied'));
+  updateProgress();
+});
+
+/* ===================== SEARCH ===================== */
+const searchInput = document.getElementById('searchInput');
+const emptyState = document.getElementById('emptyState');
+
+function escRe(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+
+searchInput.addEventListener('input', ()=>{
+  const term = searchInput.value.trim().toLowerCase();
+  let anyVisible = false;
+
+  document.querySelectorAll('.chapter').forEach(sec=>{ sec.style.display=''; });
+
+  document.querySelectorAll('.qcard').forEach(card=>{
+    const qtextEl = card.querySelector('.qtext');
+    const bodyEl = card.querySelector('[data-search-body]');
+    const rawQ = qtextEl.dataset.searchText;
+    const rawA = bodyEl.dataset.searchBody;
+
+    if(term === ''){
+      card.classList.remove('hidden-by-search');
+      qtextEl.innerHTML = qtextEl.textContent; // strip marks
+      anyVisible = true;
+      return;
+    }
+
+    const matches = rawQ.includes(term) || rawA.includes(term);
+    if(matches){
+      card.classList.remove('hidden-by-search');
+      anyVisible = true;
+      const re = new RegExp(escRe(term),'gi');
+      qtextEl.innerHTML = qtextEl.textContent.replace(re, m=>`<mark class="hit">${m}</mark>`);
+    } else {
+      card.classList.add('hidden-by-search');
+    }
+  });
+
+  // hide chapter headers with zero visible cards
+  document.querySelectorAll('.chapter').forEach(sec=>{
+    const visible = sec.querySelectorAll('.qcard:not(.hidden-by-search)').length;
+    sec.style.display = (term!=='' && visible===0) ? 'none' : '';
+  });
+
+  emptyState.classList.toggle('show', term!=='' && !anyVisible);
+});
+
+/* ===================== ACTIVE CHAPTER ON SCROLL ===================== */
+const chapterLinks = document.querySelectorAll('.chapter-link');
+const sections = Array.from(document.querySelectorAll('.chapter'));
+
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const id = entry.target.id.replace('ch-','');
+      chapterLinks.forEach(l=>l.classList.toggle('active', l.dataset.chapter===id));
+    }
+  });
+},{ rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+sections.forEach(s=>observer.observe(s));
+
+/* ===================== MOBILE SIDEBAR ===================== */
+const sidebar = document.getElementById('sidebar');
+const backdrop = document.getElementById('backdrop');
+const menuBtn = document.getElementById('menuBtn');
+
+function openSidebar(){ sidebar.classList.add('open'); backdrop.classList.add('show'); }
+function closeSidebar(){ sidebar.classList.remove('open'); backdrop.classList.remove('show'); }
+
+menuBtn.addEventListener('click', ()=>{
+  sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+});
+backdrop.addEventListener('click', closeSidebar);
+
+/* ===================== BACK TO TOP ===================== */
+const totopBtn = document.getElementById('totopBtn');
+window.addEventListener('scroll', ()=>{
+  totopBtn.classList.toggle('show', window.scrollY > 480);
+},{passive:true});
+totopBtn.addEventListener('click', ()=>{
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+</script>
+</body>
+</html>

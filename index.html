@@ -4,22 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Психология и педагогика — конспект к зачёту</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  @font-face{ font-family:'Libre Caslon Cond'; src:url('fonts/LibreCaslonCyrCondensed-Regular.otf') format('opentype'); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'Inter Tight'; src:url('fonts/InterTight-Medium.ttf') format('truetype'); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'Inter Tight'; src:url('fonts/InterTight-SemiBold.ttf') format('truetype'); font-weight:600; font-style:normal; font-display:swap; }
+  @font-face{ font-family:'Atkinson Mono'; src:url('fonts/AtkinsonHyperlegibleMono-Medium.ttf') format('truetype'); font-weight:500; font-style:normal; font-display:swap; }
+
 :root{
-  --ink:#0F1115;
-  --paper:#F7F5F0;
-  --paper-dim:#EDE9DF;
-  --blue:#2B4C7E;
-  --blue-light:#5677A8;
-  --brass:#C9A227;
-  --brass-soft:#E0C572;
-  --slate:#6B7280;
-  --line:#E2DDD0;
-  --line-dark:#262A33;
-  --card:#FFFFFF;
+  --ink:#100E14;
+  --paper:#ECF4FF;
+  --paper-dim:#211E2A;
+  --blue:#FF9FA2;
+  --blue-light:#FFB3B5;
+  --brass:#E7B588;
+  --brass-soft:#E7B588;
+  --slate:rgba(236,244,255,.58);
+  --line:#332F3D;
+  --line-dark:#332F3D;
+  --card:#1A1822;
   --radius:14px;
   --max-w:1240px;
   --ease:cubic-bezier(.22,.61,.36,1);
@@ -30,7 +32,7 @@ body{
   margin:0;
   background:var(--ink);
   color:var(--paper);
-  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-family:'Inter Tight',system-ui,-apple-system,sans-serif;
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
@@ -50,7 +52,7 @@ button{font-family:inherit;}
   position:sticky;top:0;z-index:40;
   display:flex;align-items:center;gap:14px;
   padding:14px 20px;
-  background:rgba(15,17,21,.86);
+  background:rgba(16,14,20,.88);
   backdrop-filter:blur(14px) saturate(140%);
   border-bottom:1px solid var(--line-dark);
 }
@@ -58,13 +60,13 @@ button{font-family:inherit;}
   width:34px;height:34px;border-radius:9px;flex:none;
   background:linear-gradient(155deg,var(--blue) 0%,var(--blue-light) 100%);
   display:flex;align-items:center;justify-content:center;
-  font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--paper);
+  font-family:'Libre Caslon Cond',Georgia,serif;font-weight:700;font-size:16px;color:var(--paper);
 }
 .topbar .title{
   display:flex;flex-direction:column;line-height:1.15;min-width:0;
 }
-.topbar .title b{font-family:'Fraunces',serif;font-weight:600;font-size:15px;letter-spacing:.2px;}
-.topbar .title span{font-size:11px;color:var(--slate);font-family:'JetBrains Mono',monospace;}
+.topbar .title b{font-family:'Libre Caslon Cond',Georgia,serif;font-weight:600;font-size:15px;letter-spacing:.2px;}
+.topbar .title span{font-size:11px;color:var(--slate);font-family:'Atkinson Mono',monospace;}
 .topbar .spacer{flex:1;}
 
 .menu-btn{
@@ -80,14 +82,14 @@ button{font-family:inherit;}
 }
 .search-wrap input{
   width:100%;
-  background:#171A20;border:1px solid var(--line-dark);
+  background:#1A1822;border:1px solid var(--line-dark);
   color:var(--paper);font-size:13px;
   padding:9px 12px 9px 32px;border-radius:10px;
-  font-family:'Inter',sans-serif;
+  font-family:'Inter Tight',sans-serif;
   transition:border-color .2s var(--ease),background .2s var(--ease);
 }
 .search-wrap input::placeholder{color:var(--slate);}
-.search-wrap input:focus{outline:none;border-color:var(--blue-light);background:#1B1F27;}
+.search-wrap input:focus{outline:none;border-color:var(--blue-light);background:#211E2A;}
 .search-wrap svg{
   position:absolute;left:11px;top:50%;transform:translateY(-50%);
   width:14px;height:14px;color:var(--slate);pointer-events:none;
@@ -103,7 +105,7 @@ button{font-family:inherit;}
 .dial .fill{stroke:var(--brass);stroke-linecap:round;transition:stroke-dashoffset .6s var(--ease);}
 .dial .pct{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--brass-soft);
+  font-family:'Atkinson Mono',monospace;font-size:10px;font-weight:600;color:var(--brass-soft);
 }
 
 /* ===== Layout ===== */
@@ -131,11 +133,11 @@ button{font-family:inherit;}
 
 .overall{
   margin-bottom:22px;padding:16px;border-radius:var(--radius);
-  background:linear-gradient(155deg,#171B22,#13161B);
+  background:linear-gradient(155deg,#1A1822,#1A1822);
   border:1px solid var(--line-dark);
 }
-.overall .label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--slate);text-transform:uppercase;}
-.overall .num{font-family:'Fraunces',serif;font-size:32px;font-weight:600;color:var(--paper);margin:4px 0 8px;}
+.overall .label{font-family:'Atkinson Mono',monospace;font-size:10px;letter-spacing:.08em;color:var(--slate);text-transform:uppercase;}
+.overall .num{font-family:'Libre Caslon Cond',Georgia,serif;font-size:32px;font-weight:600;color:var(--paper);margin:4px 0 8px;}
 .overall .num span{font-size:16px;color:var(--slate);font-weight:400;}
 .overall .bar{height:5px;border-radius:3px;background:var(--line-dark);overflow:hidden;}
 .overall .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue-light),var(--brass));border-radius:3px;transition:width .5s var(--ease);width:0%;}
@@ -148,18 +150,18 @@ button{font-family:inherit;}
   border:1px solid transparent;
   transition:background .15s var(--ease);
 }
-.chapter-link:hover{background:#171A20;}
-.chapter-link.active{background:#181C24;border-color:var(--line-dark);}
+.chapter-link:hover{background:#1A1822;}
+.chapter-link.active{background:#211E2A;border-color:var(--line-dark);}
 .chapter-link .ico{
   flex:none;width:26px;height:26px;border-radius:7px;
   display:flex;align-items:center;justify-content:center;
-  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+  font-family:'Atkinson Mono',monospace;font-size:10px;font-weight:600;
   background:var(--line-dark);color:var(--slate);
 }
 .chapter-link.active .ico{background:var(--blue);color:var(--paper);}
 .chapter-link .txt{flex:1;min-width:0;}
 .chapter-link .txt b{display:block;font-size:13px;font-weight:500;color:var(--paper);line-height:1.25;}
-.chapter-link .txt small{display:block;font-size:11px;color:var(--slate);font-family:'JetBrains Mono',monospace;margin-top:2px;}
+.chapter-link .txt small{display:block;font-size:11px;color:var(--slate);font-family:'Atkinson Mono',monospace;margin-top:2px;}
 .chapter-link .ring{
   flex:none;width:20px;height:20px;position:relative;
 }
@@ -184,12 +186,12 @@ main{
   margin-bottom:44px;
 }
 .hero .eyebrow{
-  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  font-family:'Atkinson Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--brass-soft);margin-bottom:14px;display:flex;align-items:center;gap:10px;
 }
 .hero .eyebrow::before{content:'';width:18px;height:1px;background:var(--brass-soft);}
 .hero h1{
-  font-family:'Fraunces',serif;font-weight:600;font-size:42px;line-height:1.08;letter-spacing:-.5px;
+  font-family:'Libre Caslon Cond',Georgia,serif;font-weight:600;font-size:42px;line-height:1.08;letter-spacing:-.5px;
   margin:0 0 14px;max-width:680px;color:var(--paper);
 }
 .hero h1 em{font-style:italic;color:var(--brass-soft);font-weight:500;}
@@ -199,8 +201,8 @@ main{
 .hero .meta{
   display:flex;gap:22px;margin-top:24px;flex-wrap:wrap;
 }
-.hero .meta div{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--slate);}
-.hero .meta div b{color:var(--paper);font-size:15px;display:block;font-family:'Fraunces',serif;font-weight:600;margin-bottom:2px;}
+.hero .meta div{font-family:'Atkinson Mono',monospace;font-size:11px;color:var(--slate);}
+.hero .meta div b{color:var(--paper);font-size:15px;display:block;font-family:'Libre Caslon Cond',Georgia,serif;font-weight:600;margin-bottom:2px;}
 
 /* ===== Chapter section ===== */
 .chapter{
@@ -211,15 +213,15 @@ main{
   padding-bottom:14px;border-bottom:1px solid var(--line-dark);
 }
 .chapter-head .n{
-  font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--brass-soft);font-weight:600;
+  font-family:'Atkinson Mono',monospace;font-size:13px;color:var(--brass-soft);font-weight:600;
 }
 .chapter-head h2{
-  font-family:'Fraunces',serif;font-weight:600;font-size:25px;margin:0;color:var(--paper);flex:1;
+  font-family:'Libre Caslon Cond',Georgia,serif;font-weight:600;font-size:25px;margin:0;color:var(--paper);flex:1;
   letter-spacing:-.2px;
 }
 .chapter-head .count{
-  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--slate);
-  background:#171A20;border:1px solid var(--line-dark);border-radius:20px;padding:4px 10px;flex:none;
+  font-family:'Atkinson Mono',monospace;font-size:11px;color:var(--slate);
+  background:#1A1822;border:1px solid var(--line-dark);border-radius:20px;padding:4px 10px;flex:none;
 }
 
 /* ===== Question cards ===== */
@@ -243,7 +245,7 @@ main{
   flex:none;width:32px;height:32px;border-radius:50%;
   border:1.5px solid var(--line);
   display:flex;align-items:center;justify-content:center;
-  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--ink);
+  font-family:'Atkinson Mono',monospace;font-size:11px;font-weight:600;color:var(--ink);
   transition:all .25s var(--ease);
   position:relative;
 }
@@ -264,7 +266,7 @@ main{
   flex:1;font-size:14.5px;font-weight:500;color:var(--ink);line-height:1.4;min-width:0;
 }
 .qhead .chev{
-  flex:none;width:18px;height:18px;color:#9C9587;
+  flex:none;width:18px;height:18px;color:rgba(236,244,255,.45);
   transition:transform .3s var(--ease);
 }
 .qcard.open .chev{transform:rotate(180deg);}
@@ -275,7 +277,7 @@ main{
 }
 .qbody-inner{
   padding:0 18px 22px 64px;
-  color:#3A372F;
+  color:rgba(236,244,255,.74);
   font-size:14px;line-height:1.7;
 }
 .qbody-inner p{margin:0 0 12px;}
@@ -290,7 +292,7 @@ mark.hit{background:var(--brass-soft);color:var(--ink);border-radius:3px;padding
 }
 .empty-state.show{display:block;}
 .empty-state .ico{font-size:32px;margin-bottom:12px;}
-.empty-state h3{font-family:'Fraunces',serif;color:var(--paper);font-size:20px;margin:0 0 6px;}
+.empty-state h3{font-family:'Libre Caslon Cond',Georgia,serif;color:var(--paper);font-size:20px;margin:0 0 6px;}
 .empty-state p{font-size:13px;margin:0;}
 
 /* ===== Back to top ===== */
@@ -310,7 +312,7 @@ mark.hit{background:var(--brass-soft);color:var(--ink);border-radius:3px;padding
 .reset-btn{
   margin-top:18px;width:100%;
   background:transparent;border:1px solid var(--line-dark);color:var(--slate);
-  font-size:11.5px;font-family:'JetBrains Mono',monospace;
+  font-size:11.5px;font-family:'Atkinson Mono',monospace;
   padding:9px;border-radius:9px;cursor:pointer;
   transition:all .2s var(--ease);
 }
@@ -378,6 +380,29 @@ mark.hit{background:var(--brass-soft);color:var(--ink);border-radius:3px;padding
 a:focus-visible,button:focus-visible,input:focus-visible,.qhead:focus-visible{
   outline:2px solid var(--brass);outline-offset:2px;
 }
+
+/* ===== Дизайн-система v2 ===== */
+  .xlink{flex:none; font-family:'Inter Tight', sans-serif; font-size:.82rem; font-weight:600; color:#FF9FA2; text-decoration:none; border:1px solid #332F3D; border-radius:999px; padding:4px 12px; white-space:nowrap; transition:border-color .15s ease, background .15s ease;}
+  .xlink:hover{border-color:#FF9FA2; background:rgba(255,159,162,.14);}
+  .xlink:focus-visible{outline:2px solid #FF9FA2; outline-offset:2px;}
+
+.grain{display:none;}
+body{font-weight:500;}
+.topbar .mark{background:var(--blue);color:#1A1216;font-weight:400;}
+.topbar .title b{font-weight:400;font-size:17px;}
+.hero h1, .chapter-head h2, .overall .num, .hero .meta div b, .empty-state h3{font-weight:400;}
+.hero h1 em{font-style:normal;color:var(--blue);}
+.qcard{border-color:var(--line-dark);box-shadow:0 1px 2px rgba(0,0,0,.35), 0 14px 34px -14px rgba(0,0,0,.65);}
+.qcard.studied{border-color:rgba(143,214,166,.55);}
+.qhead .qtext{color:var(--paper);}
+.qhead .stamp{color:var(--slate);}
+.qcard.studied .stamp{background:#8FD6A6;border-color:#8FD6A6;color:#10231A;}
+.qcard.studied .stamp::after{border-color:#8FD6A6;}
+.chapter-link.active .ico{background:var(--blue);color:#1A1216;}
+.overall .bar i{background:linear-gradient(90deg,var(--blue),var(--brass));}
+.totop{background:var(--blue);color:#1A1216;}
+mark.hit{background:rgba(255,159,162,.35);color:var(--paper);}
+@media (max-width:680px){ .xlink{padding:6px 11px;font-size:.9rem;} .xl-long{display:none;} }
 </style>
 </head>
 <body>
@@ -393,6 +418,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,.qhead:focus-visible{
     <span>Конспект к зачёту · по Маклакову</span>
   </div>
   <div class="spacer"></div>
+  <a class="xlink" href="https://nexylojik.github.io/landingSGMU/" title="Все тренажёры">←<span class="xl-long"> Все тренажёры</span></a>
   <div class="search-wrap">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     <input type="text" id="searchInput" placeholder="Найти по вопросам..." autocomplete="off">
